@@ -24,6 +24,8 @@ const callback_function = async (accessToken, refreshToken, profile, done) => {
         googleId: profile.id,
         email: profile.emails[0].value,
         photo: profile.photos[0].value,
+        workspaces: [],
+        workspaces_emails: [],
       };
       const update_params = {
         TableName: "Users",

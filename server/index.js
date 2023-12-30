@@ -7,9 +7,14 @@ const AWS = require("./utils/AWS.js");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const User = require("./models/UserModel.js");
+const cors = require("cors");
 
 const app = express();
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+app.use(cors(corsOptions));
 
 const store = new MongoDBStore({
   uri: "mongodb://127.0.0.1:27017/slack-clone",
@@ -19,7 +24,8 @@ const store = new MongoDBStore({
 
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: process.env.SESSION_SECRET,
+    name: "slack-clone",
     resave: false,
     saveUninitialized: false,
     store: store,

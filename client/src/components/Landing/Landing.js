@@ -15,7 +15,14 @@ const Landing = () => {
           </p>
 
           <div>
-            <button className="google-sign-in">Sign In With Google!</button>
+            <button
+              className="google-sign-in"
+              onClick={() => {
+                window.location.href = "http://localhost:5000/auth/google";
+              }}
+            >
+              Sign In With Google!
+            </button>
           </div>
 
           <div className="landing-page-or">------------ OR ------------</div>
