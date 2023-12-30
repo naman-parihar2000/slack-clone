@@ -1,6 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const User = require("../models/UserModel.js");
+const AWS = require("./AWS.js");
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const credentials = {
   clientID: process.env.GOOGLE_CLIENT_ID,
@@ -8,39 +9,53 @@ const credentials = {
   callbackURL: "/auth/google/callback",
 };
 
-const callback_function = (accessToken, refreshToken, profile, done) => {
+const callback_function = async (accessToken, refreshToken, profile, done) => {
+  try {
+    const get_params = {
+      TableName: "Users",
+      Key: { googleId: profile.id },
+    };
 
-  console.log(profile);
+    let { Item } = await dynamodb.get(get_params).promise();
 
-  User.findOne({ googleId: profile.id })
-    .then((existingUser) => {
-      if (existingUser) {
-        return done(null, existingUser);
-      } else {
-        const newUser = new User({
-          username: profile.displayName,
-          email: profile.emails[0].value,
-          photo: profile.photos[0].value,
-        });
-        
-        console.log(newUser);
-
-        newUser.save().then((user) => {
-          return done(null, user);
-        });
-      }
-    })
-    .catch((err) => {
-      return done(err, null);
-    });
+    if (!Item) {
+      const user = {
+        username: profile.displayName,
+        googleId: profile.id,
+        email: profile.emails[0].value,
+        photo: profile.photos[0].value,
+      };
+      const update_params = {
+        TableName: "Users",
+        Item: user,
+      };
+      await dynamodb.put(update_params).promise();
+      done(null, user);
+    } else {
+      done(null, Item);
+    }
+  } catch (error) {
+    return done(error, null);
+  }
 };
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, user.googleId);
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+passport.deserializeUser(async (googleId, done) => {
+  try {
+    const get_params = {
+      TableName: "Users",
+      Key: { googleId },
+    };
+
+    let { Item } = await dynamodb.get(get_params).promise();
+
+    return done(null, Item);
+  } catch (error) {
+    return done(error);
+  }
 });
 
 passport.use(new GoogleStrategy(credentials, callback_function));
