@@ -1,0 +1,46 @@
+.landing-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.landing-page {
+  text-align: center;
+}
+
+.landing-page-image {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.landing-page-heading {
+  font-size: xx-large;
+}
+
+.landing-page-or {
+  padding: 2rem;
+}
+
+.sign-in {
+  margin-bottom: 20px;
+}
+
+.google-sign-in,
+.email-button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #61c7ef; /* Change the color as desired */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.email-input {
+  padding: 8px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
