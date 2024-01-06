@@ -9,9 +9,9 @@ const Landing = () => {
         <img src={slack} className="landing-page-image" alt="Slack Logo" />
 
         <div className="sign-in">
-          <h1 className="landing-page-heading">Sign in to Slack</h1>
-          <p>
-            We suggest using the <strong>email address you use at work</strong>
+          <h1 className="landing-page-heading">Sign-in to my Slack-Clone</h1>
+          <p  className="landing-page-paragraph">
+            We suggest using the <strong>email address you use at work!</strong>
           </p>
 
           <div>
@@ -25,7 +25,7 @@ const Landing = () => {
             </button>
           </div>
 
-          <div className="landing-page-or">------------ OR ------------</div>
+          <div className="landing-page-or">---------------------- OR ----------------------</div>
 
           <form className="email-sign-in">
             <input

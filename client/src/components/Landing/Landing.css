@@ -2,11 +2,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  max-width: 100%;
+  height: 100%;
+  margin-top: 3rem;
 }
 
 .landing-page {
   text-align: center;
+  background-color: #f4f9f9;
+  padding: 3.6rem;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .landing-page-image {
@@ -16,31 +23,39 @@
 }
 
 .landing-page-heading {
-  font-size: xx-large;
+  font-size: 2.4rem;
+  padding-bottom: 2rem;
+}
+
+.landing-page-paragraph {
+  padding-bottom: 2rem;
 }
 
 .landing-page-or {
   padding: 2rem;
-}
-
-.sign-in {
-  margin-bottom: 20px;
+  color: #ccc;
 }
 
 .google-sign-in,
 .email-button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   margin: 5px;
-  background-color: #61c7ef; /* Change the color as desired */
+  background-color: #61c7ef;
   color: #fff;
+  font-weight: 400;
+  font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  text-align: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .email-input {
-  padding: 8px;
-  margin: 5px;
+  width: 16rem;
+  padding: 12px;
+  margin: 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }

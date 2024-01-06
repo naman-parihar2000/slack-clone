@@ -3,7 +3,8 @@ const express = require("express");
 const passport = require("passport");
 const connectAndStartServer = require("./server");
 const authRoutes = require("./routes/authRoutes");
-const AWS = require("./utils/AWS.js");
+const userRoutes = require("./routes/userRoutes");
+// const AWS = require("./utils/AWS.js");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -13,6 +14,7 @@ const app = express();
 
 const corsOptions = {
   origin: "http://localhost:3000",
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -36,27 +38,29 @@ app.use(
 );
 
 app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 
-app.post("/put_entry", async (req, res) => {
-  const dynamodb = new AWS.DynamoDB.DocumentClient();
-  const params = {
-    TableName: "Sessions",
-    Item: {
-      session_id: "123321",
-      user_id: "N",
-      created_at: Date.now(),
-    },
-  };
+// app.post("/put_entry", async (req, res) => {
+//   const dynamodb = new AWS.DynamoDB.DocumentClient();
+//   const params = {
+//     TableName: "Sessions",
+//     Item: {
+//       session_id: "123321",
+//       user_id: "N",
+//       created_at: Date.now(),
+//     },
+//   };
 
-  try {
-    await dynamodb.put(params).promise();
-    res.send("DATA ENTERED!");
-  } catch (err) {
-    console.log(err);
-    res.send("SOMETHINGS GONE WRONG!");
-  }
-});
+//   try {
+//     await dynamodb.put(params).promise();
+//     res.send("DATA ENTERED!");
+//   } catch (err) {
+//     console.log(err);
+//     res.send("SOMETHINGS GONE WRONG!");
+//   }
+// });
 
 connectAndStartServer(app);
