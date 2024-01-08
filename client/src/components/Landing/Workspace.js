@@ -20,7 +20,6 @@ const Workspace = () => {
       const { data } = await axios.get("http://localhost:5000/user", {
         withCredentials: true,
       });
-      console.log(data);
       setUserData(data.data);
       setIsLoading(false);
     } catch (error) {
