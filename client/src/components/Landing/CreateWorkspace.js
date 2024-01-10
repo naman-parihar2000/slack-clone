@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./CreateWorkspace.css";
+const validFileTypes = ["image/jpg", "image/jpeg", "image/png"];
 
 const CreateWorkspace = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { email, userName, photo } = location.state || {};
 
   const initialFormState = {
@@ -38,9 +39,9 @@ const CreateWorkspace = () => {
     });
   };
 
-  const handleProfileUpload = (e) => {
+  const handleTeamProfileUpload = async (e) => {
     const file = e.target.files[0];
-    console.log(file);
+
     const reader = new FileReader();
 
     reader.onloadend = () => {
@@ -51,10 +52,57 @@ const CreateWorkspace = () => {
     if (file) {
       reader.readAsDataURL(file);
     }
+
+    if (!validFileTypes.find((type) => type === file.type)) {
+      console.log("File must be in JPG/PNG/JPEG format");
+    }
+
+    const form = new FormData();
+    form.append("image", file);
+
+    try {
+      const response = await fetch("http://localhost:5000/user/image/upload", {
+        method: "POST",
+        body: form,
+        credentials: "include",
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const handleSubmitButtonClick = async (e) => {
     e.preventDefault();
+    // let s3UploadResponse;
+
+    // if (userData?.photo_file) {
+    //   s3UploadResponse = await fetchData(uploadImageToS3, {
+    //     file_type: userData.photo_file.type,
+    //     photo_file: userData.photo_file,
+    //   });
+    // }
+
+    // let payload = {
+    //   workspace_name: userData.workspace_name,
+    //   invite_emails: userData.invite_emails,
+    //   username: userData.username,
+    // };
+
+    // if (
+    //   userData?.photo_file &&
+    //   s3UploadResponse?.statusText === "OK" &&
+    //   s3UploadResponse?.status === 200
+    // ) {
+    //   payload.photo = s3UploadResponse.fileName;
+    // } else {
+    //   payload.photo = "default.png";
+    // }
+
+    // const response = await fetchData(addNewWorkspace, payload);
+
+    // console.log(response);
+    // navigate("/workspace");
     console.log(formData);
   };
 
@@ -113,7 +161,7 @@ const CreateWorkspace = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleProfileUpload}
+                  onChange={handleTeamProfileUpload}
                 />
               </div>
             </div>
@@ -185,7 +233,7 @@ const CreateWorkspace = () => {
 
         <button
           className="form-submission-button"
-          onClick={handleSubmitButtonClick}
+          onClick={()=>handleSubmitButtonClick()}
         >
           Submit Your Information
         </button>
