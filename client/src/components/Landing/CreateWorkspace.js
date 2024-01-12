@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 import "./CreateWorkspace.css";
 const validFileTypes = ["image/jpg", "image/jpeg", "image/png"];
 
 const CreateWorkspace = () => {
   const location = useLocation();
   // const navigate = useNavigate();
-  const { email, userName, photo } = location.state || {};
+  // const { email, userName, photo, googleId } = location.state || {};
+  const { email, photo } = location.state || {};
 
   const initialFormState = {
     email: email || "",
-    userName: userName || "",
+    // userName: userName || "",
+    userName: "Naman",
     workspaceName: "Google",
     teamActivity: "AWS Usage",
     inviteEmails: ["namanp612@gmail.com"],
@@ -19,6 +22,24 @@ const CreateWorkspace = () => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [newEmail, setNewEmail] = useState("");
+  const [imageUrl, setImageUrl] = useState();
+
+  // const [defaultImageUrl, setDefaultImageUrl] = useState("");
+
+  useEffect(() => {
+    async function fetchDefaultImageUrl() {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/user/image/default"
+        );
+        const data = await response.json();
+        setImageUrl(data.imageUrl);
+      } catch (error) {
+        console.error("Error fetching default image:", error);
+      }
+    }
+    fetchDefaultImageUrl();
+  }, []);
 
   const handleAddToFront = (e) => {
     e.preventDefault();
@@ -66,7 +87,9 @@ const CreateWorkspace = () => {
         body: form,
         credentials: "include",
       });
-      console.log(response);
+      const data = await response.json();
+      const imageUrl = data.imageUrl;
+      setImageUrl(imageUrl);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -74,36 +97,26 @@ const CreateWorkspace = () => {
 
   const handleSubmitButtonClick = async (e) => {
     e.preventDefault();
-    // let s3UploadResponse;
+    // console.log(formData);
+    const photoUrl = imageUrl;
 
-    // if (userData?.photo_file) {
-    //   s3UploadResponse = await fetchData(uploadImageToS3, {
-    //     file_type: userData.photo_file.type,
-    //     photo_file: userData.photo_file,
-    //   });
-    // }
+    try {
+      const updateData = {
+        workspaceName: formData.workspaceName,
+        inviteEmails: formData.inviteEmails,
+        photoUrl: photoUrl,
+      };
 
-    // let payload = {
-    //   workspace_name: userData.workspace_name,
-    //   invite_emails: userData.invite_emails,
-    //   username: userData.username,
-    // };
-
-    // if (
-    //   userData?.photo_file &&
-    //   s3UploadResponse?.statusText === "OK" &&
-    //   s3UploadResponse?.status === 200
-    // ) {
-    //   payload.photo = s3UploadResponse.fileName;
-    // } else {
-    //   payload.photo = "default.png";
-    // }
-
-    // const response = await fetchData(addNewWorkspace, payload);
-
-    // console.log(response);
-    // navigate("/workspace");
-    console.log(formData);
+      const response = await axios.post(
+        "http://localhost:5000/update-dynamodb",
+        updateData,
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.log("Error updating DynamoDB:", error);
+    }
   };
 
   return (
@@ -111,6 +124,7 @@ const CreateWorkspace = () => {
       <form className="create-workspace-form">
         <div className="create-workspace-name flex">
           <span className="step-highlight">Step 1 of 4</span>
+          {imageUrl}
           <label>What's the name of your company or team?</label>
           <span>
             This will be the name of your Slack workspace - choose something
@@ -136,7 +150,7 @@ const CreateWorkspace = () => {
             </span>
             <input
               type="text"
-              value={userName}
+              value={formData.userName}
               onChange={(e) => {
                 setFormData({ ...formData, userName: e.target.value });
               }}
@@ -195,7 +209,7 @@ const CreateWorkspace = () => {
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
-                    stroke="currentColor"
+                    stroke="#61c7ef"
                     className="w-6 h-6"
                     onClick={(e) => {
                       e.preventDefault();
@@ -233,7 +247,7 @@ const CreateWorkspace = () => {
 
         <button
           className="form-submission-button"
-          onClick={()=>handleSubmitButtonClick()}
+          onClick={handleSubmitButtonClick}
         >
           Submit Your Information
         </button>

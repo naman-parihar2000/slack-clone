@@ -18,22 +18,20 @@ router.post(
   authenticate,
   upload.single("image"),
   async (req, res) => {
-    // const fileName = `N${req.user.googleId}_${Date.now()}`;
-    const fileName = `N${Date.now()}`;
+    const fileName = `${req.user.googleId}_${Date.now()}`;
     const { file } = req;
-    // console.log(file);
 
     const params = {
       Bucket: "slack-clone-user-data",
       Key: "user_profile_images/" + fileName,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: "private",
     };
 
     try {
-      await s3.upload(params).promise();
-      res.status(200).json({ success: true, status: 200 });
+      const uploaded = await s3.upload(params).promise();
+      const imageUrl = uploaded.Location;
+      res.status(200).json({ success: true, imageUrl });
     } catch (error) {
       console.log("Error:", error);
     }

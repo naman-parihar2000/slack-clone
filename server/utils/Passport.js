@@ -53,6 +53,10 @@ passport.deserializeUser(async (googleId, done) => {
 
     let { Item } = await dynamodb.get(get_params).promise();
 
+    if (!Item) {
+      return done(null, false); // User not found
+    }
+
     return done(null, Item);
   } catch (error) {
     return done(error);

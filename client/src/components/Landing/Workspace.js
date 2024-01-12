@@ -78,13 +78,9 @@ const Workspace = () => {
       )}
 
       <Outlet />
+
+      
     </Fragment>
-    // <div>
-    //   <h1>WORKSPACE</h1>
-    //   <p>{userData.email}</p>
-    //   <p>{userData.username}</p>
-    //   {userData.photo}
-    // </div>
   );
 };
 

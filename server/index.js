@@ -4,6 +4,7 @@ const passport = require("passport");
 const connectAndStartServer = require("./server");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const workspaceRoutes = require("./routes/workspaceRoutes");
 // const AWS = require("./utils/AWS.js");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -42,6 +43,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/update-dynamodb", workspaceRoutes);
 
 // app.post("/put_entry", async (req, res) => {
 //   const dynamodb = new AWS.DynamoDB.DocumentClient();
