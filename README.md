@@ -1,0 +1,7 @@
+![Screenshot (36)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/c98659e2-4368-4451-ac34-fdac880d1816)
+![Screenshot (37)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/4f89f8a4-d6d1-45bc-b7fb-81d6b64b1b6d)
+![Screenshot (38)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/71bcef4b-df42-4eb3-8d32-4a6fda801915)
+![Screenshot (39)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/e43af4bb-560f-4121-a73b-cd5a05297b6c)
+![Screenshot (40)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/caf124a6-514c-4bd4-9ff0-384c26814602)
+![Screenshot (41)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/00dec817-9166-4e07-bf1b-6a60975710dd)
+![Screenshot (42)](https://github.com/naman-parihar2000/slack-clone/assets/87593367/fa63c76d-3fbc-447d-b2ad-df8801c1b097)
